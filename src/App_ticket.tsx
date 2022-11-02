@@ -3,23 +3,27 @@ import './App.css';
 
 import { useForm } from "react-hook-form";
 
+
 export default function App_ticket() {
     const { register, handleSubmit } = useForm({ shouldUseNativeValidation: true });
     const onSubmit = async (data: any) => 
 	{ 
-	  console.log(data); 
-	  var mess = 'http://test-lvl/';
-	  var fields = ['subject', 'user_name', 'user_email', 'author', 'subject']
-	  	
-	  fields.forEach(function(item, i, arr) 
-	  {
+	    console.log(data); 
+	    var mess = 'http://test-lvl/';
+
+	    /* var fields = ['subject', 'user_name', 'user_email', 'author', 'content']
+	    fields.forEach(function(item, i, arr) 
+	    {
 		mess += (i == 0 ? '?' : '&');
-		mess += item + ':' + data.item;	   
-	  });
+		mess += item + '=' + data.get_value(item);
+	    }); */
 
-	  // alert(mess);
+	    mess += '?subject=' + data.subject + '&user_name=' + data.user_name + '&user_email='
+		+ data.user_email + '&author=' + data.author + '&content=' + data.content
 
-	  fetch(mess)
+	    alert(mess);
+
+	    fetch(mess)
       		.then(function(response) 
 		{
         		return response.json();
@@ -51,7 +55,7 @@ export default function App_ticket() {
                 {...register("user_email", { required: "Please enter user_email." })}
             />
 	    <p> author </p>
-	    <select>
+	    <select {...register("author", { required: "Please enter author." })}>
 	        <option value="client">client</option>
 	        <option value="manager">manager</option>
 	    </select>
@@ -63,3 +67,4 @@ export default function App_ticket() {
         </form>
     );
 }
+
