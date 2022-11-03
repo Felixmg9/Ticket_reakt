@@ -1,41 +1,27 @@
+import { useForm } from "react-hook-form";
+import App, {creds_str} from './App';
+import create_form from './create_form';
 import logo from './logo.svg';
 import './App.css';
 
-import { useForm } from "react-hook-form";
 
-
-export default function App_ticket() 
+export default function App_ticket()
 {
     const { register, handleSubmit } = useForm({ shouldUseNativeValidation: true });
-    const onSubmit = async (data: any) => 
-    { 
-	console.log(data); 
-	var mess = process.env.REACT_APP_SERVER || '';
+    const onSubmit = async (data: any) =>
+    {
+		var mess = process.env.REACT_APP_SERVER || '';
 
-	var fields = ['subject', 'user_name', 'user_email', 'author', 'content']
-	fields.forEach(function(item, i, arr) 
-	{
-	    mess += (i == 0 ? '?' : '&');
-	    mess += item + '=' + data[item];
-	});
+		var fields = ['subject', 'user_name', 'user_email', 'author', 'content']
+		fields.forEach(function(item, i, arr)
+		{
+			mess += (i == 0 ? '?' : '&');
+			mess += item + '=' + data[item];
+		});
 
-	// alert(mess);
-
-	fetch(mess)
-      	    .then(function(response) 
-	    {
-        	return response.json();
-      	    })
-      	    .then(function(data) 
-	    {
-        	alert('Request successful' + data);
-        	return data;
-      	    })
-            .catch(function(error) 
-	    {
-		console.log(error); 		
-      	    })
-	;
+		fetch(mess + '&' + creds_str);
+		create_form(<App/>);
+		;
     };
 
     return (
@@ -61,7 +47,7 @@ export default function App_ticket()
             <input
                 {...register("content", { required: "Please enter content." })}
             />
-            <input type="submit" />
+			<input type="submit" data-dismiss="modal" />
         </form>
     );
 }
