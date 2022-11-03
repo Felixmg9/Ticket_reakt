@@ -4,41 +4,39 @@ import './App.css';
 import { useForm } from "react-hook-form";
 
 
-export default function App_ticket() {
+export default function App_ticket() 
+{
     const { register, handleSubmit } = useForm({ shouldUseNativeValidation: true });
     const onSubmit = async (data: any) => 
-	{ 
-	    console.log(data); 
-	    var mess = 'http://test-lvl/';
+    { 
+	console.log(data); 
+	var mess = process.env.REACT_APP_SERVER || '';
 
-	    /* var fields = ['subject', 'user_name', 'user_email', 'author', 'content']
-	    fields.forEach(function(item, i, arr) 
+	var fields = ['subject', 'user_name', 'user_email', 'author', 'content']
+	fields.forEach(function(item, i, arr) 
+	{
+	    mess += (i == 0 ? '?' : '&');
+	    mess += item + '=' + data[item];
+	});
+
+	// alert(mess);
+
+	fetch(mess)
+      	    .then(function(response) 
 	    {
-		mess += (i == 0 ? '?' : '&');
-		mess += item + '=' + data.get_value(item);
-	    }); */
-
-	    mess += '?subject=' + data.subject + '&user_name=' + data.user_name + '&user_email='
-		+ data.user_email + '&author=' + data.author + '&content=' + data.content
-
-	    alert(mess);
-
-	    fetch(mess)
-      		.then(function(response) 
-		{
-        		return response.json();
-      		})
-      		.then(function(data) 
-		{
-        		alert('Request successful' + data);
-        		return data;
-      		})
-        	.catch(function(error) 
-		{
-			console.log(error); 		
-      		});
-
-	};
+        	return response.json();
+      	    })
+      	    .then(function(data) 
+	    {
+        	alert('Request successful' + data);
+        	return data;
+      	    })
+            .catch(function(error) 
+	    {
+		console.log(error); 		
+      	    })
+	;
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
